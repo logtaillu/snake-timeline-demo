@@ -1,0 +1,59 @@
+@snake-timeline-prefix: react-snake-timeline;
+.@{snake-timeline-prefix} {
+    &-list {
+        height: 100%;
+        box-sizing: border-box;
+        list-style: none;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
+        display: flex;
+        align-content: center;
+    }
+
+    &-wrap {
+        flex-wrap: wrap;
+    }
+
+    &-vertical {
+        flex-direction: column;
+    }
+
+    &-horizontal {
+        flex-direction: row;
+    }
+
+    // item part
+    &-item {
+        position: relative;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    &-item &-line {
+        position: absolute;
+    }
+
+    &-item &-dot {
+        position: absolute;
+        box-sizing: border-box;
+        background-color: #fff;
+        border: 2px solid transparent;
+        border-radius: 100%;
+        color: cornflowerblue;
+        border-color: cornflowerblue;
+    }
+
+    &-item &-content {
+        box-sizing: border-box;
+        position: relative;
+        margin: 0 0 0 18px;
+        word-break: break-word;
+        background: coral;
+        color: #fff;
+        border-radius: 4px;
+        padding: 10px;
+    }
+}
