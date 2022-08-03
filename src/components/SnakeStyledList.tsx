@@ -1,21 +1,14 @@
 import styled, { css } from "styled-components";
 import { ISnakeTimelineCssVar } from "../ISnakeTimeline";
-const defaultCssVar: ISnakeTimelineCssVar = {
-  lineColor: "#e8e8e8",
-  lineWidth: 2,
-  dotSize: 10,
-  pad: 10
-}
-const SnakeStyledList = styled.ul<{ w?: number, prefix: string, cssvar?: Partial<ISnakeTimelineCssVar> }>`
+
+const SnakeStyledList = styled.ul<{ w?: number, prefix: string, cssvar: ISnakeTimelineCssVar }>`
 ${(props) => {
     const { w: itemw = 0, prefix, cssvar } = props;
-    const { pad, lineColor, lineWidth, dotSize } = { ...defaultCssVar, ...cssvar };
+    const { pad, lineColor, lineWidth, dotSize } = cssvar;
     const w = itemw + lineWidth;
     const halfw = w / 2;
     const left = (dotSize - lineWidth) / 2;
     return css`
-        padding-top: ${halfw}px;
-        padding-bottom: ${halfw}px;
         >li.${prefix}-item {
             width: ${itemw}px;
             padding: ${pad}px 10px ${pad}px 0;

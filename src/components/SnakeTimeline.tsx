@@ -1,12 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import { useSize } from "ahooks";
 import "../styles/index.less";
-import { ISnakeTimelineProps, ISnakeTimelineStyleProps } from '../ISnakeTimeline';
+import { ISnakeTimelineCssVar, ISnakeTimelineProps, ISnakeTimelineStyleProps } from '../ISnakeTimeline';
 import SnakeTimelineItem from './SnakeTimelineItem';
 import SnakeStyledList from './SnakeStyledList';
 import { adjustPosition } from "./util";
 
 const DEFAULT_PREFIX_CLS = "react-snake-timeline";
+const defaultCssVar: ISnakeTimelineCssVar = {
+    lineColor: "#e8e8e8",
+    lineWidth: 2,
+    dotSize: 10,
+    pad: 10
+}
 
 // merge item style props
 const mergeProps = (itemProps: ISnakeTimelineStyleProps, wrapProps: ISnakeTimelineStyleProps) => {
@@ -23,11 +29,13 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
     const size = useSize(ref);
     const w = (size && size.width) || 0;
     const h = (size && size.height) || 0;
+    const cssvars = { ...defaultCssVar, ...css };
     useEffect(() => {
+        // resort items and add circle
         if (w && h && ref.current && itemWidth && wrap) {
-            adjustPosition(ref.current, itemWidth);
+            adjustPosition(ref.current, itemWidth, cssvars.lineWidth);
         }
-    }, [w, h, itemWidth, wrap]);
+    }, [w, h, itemWidth, wrap, cssvars.lineWidth]);
     const prefixCls = (str: string) => `${prefix}-${str}`;
 
     // getChildren
@@ -60,9 +68,11 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
         });
     }
     return (
-        <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${className || ""}`} prefix={prefix} w={itemWidth} cssvar={css} style={style}>
-            {childeles}
-        </SnakeStyledList>
+        <div className={`${prefixCls("wrapper") } ${className || ""}`} style={{paddingTop: cssvars.pad ,...style}}>
+            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)}`} prefix={prefix} w={itemWidth} cssvar={cssvars}>
+                {childeles}
+            </SnakeStyledList>
+        </div>
     )
 }
 export default SnakeTimeline;
