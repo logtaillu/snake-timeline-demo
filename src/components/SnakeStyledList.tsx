@@ -10,7 +10,7 @@ ${(props) => {
     const left = (dotSize - lineWidth) / 2;
     return css`
         >li.${prefix}-item {
-            width: ${itemw}px;
+            width: ${itemw ? itemw + "px" : "auto"};
             padding: ${pad}px 10px ${pad}px 0;
             .${prefix}-line{
               height: calc( 100% + ${pad * 2}px );
@@ -21,7 +21,7 @@ ${(props) => {
             .${prefix}-dot{
               width: ${dotSize}px;
               height:${dotSize}px;
-              top: calc( 50% - ${dotSize/2}px );
+              top: calc( 50% - ${dotSize / 2}px );
             }
         }
         > li[data-circle="top"]::before,

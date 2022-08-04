@@ -7,8 +7,8 @@ const mockData = new Array(20).fill(0)
 }));
 const App = () => {
   return (
-    <div style={{padding: 10}}>
-      <SnakeTimeline wrap={true} data={mockData} direction="vertical"  style={{height: 400}} itemWidth={150}/>
+    <div style={{padding: 10, height: 400}}>
+      <SnakeTimeline wrap={true} data={mockData} direction="vertical" itemWidth={150} />
     </div>
   );
 }

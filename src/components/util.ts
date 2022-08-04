@@ -1,8 +1,15 @@
+import { ISnakeTimelineProps } from "../ISnakeTimeline";
+/**
+ * check if more then count lines
+ * @param children timeline item array
+ * @param count line num
+ * @returns boolean
+ */
 const checkLineNumByCount = (children: HTMLLIElement[], count: number) => {
     let start = 0;
     let lines = 0;
     let flag = false;
-    for (let i = 0; i < children.length; i++){
+    for (let i = 0; i < children.length; i++) {
         const cur = children[i].offsetLeft;
         if (i == 0) {
             start = cur;
@@ -18,9 +25,19 @@ const checkLineNumByCount = (children: HTMLLIElement[], count: number) => {
     }
     return flag;
 }
-export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: number) => {
+
+export const getItemWidth = (ele: HTMLUListElement, itemWidth?: number) => {
     const children = Array.from(ele.children) as HTMLLIElement[];
-    const pad = (columnW + lineW) / 2;
+    if (itemWidth) {
+        return itemWidth;
+    } else {
+        const itemW = children.reduce((pre, cur) => Math.max(pre, cur.offsetWidth), 0);
+        return itemW;
+    }
+}
+
+export const clearEffects = (ele: HTMLUListElement) => {
+    const children = Array.from(ele.children) as HTMLLIElement[];
     // reset
     children.map((value, index) => {
         value.style.order = index.toString();
@@ -29,6 +46,12 @@ export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: nu
     // clear padding
     ele.style.paddingTop = "0px";
     ele.style.paddingBottom = "0px";
+}
+
+export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: number) => {
+    clearEffects(ele);
+    const children = Array.from(ele.children) as HTMLLIElement[];
+    const pad = (columnW + lineW) / 2;
     // check if multi line
     const multiline = checkLineNumByCount(children, 1);
     if (multiline) {

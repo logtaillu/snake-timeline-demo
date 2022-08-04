@@ -35,7 +35,6 @@ export interface ISnakeTimelineCssVar {
 }
 
 /**
- * if wrap = true, at latest one of 'itemWidth'、'itemPerLine','lineCount' is needed for adjust
  * lineCount have priority over itemPerLine
  * props.children have priority over props.data
  */
@@ -50,10 +49,6 @@ export interface ISnakeTimelineProps extends ISnakeTimelineStyleProps {
     wrap?: boolean;
     /**@description width of one item，单个元素宽度 */
     itemWidth?: number;
-    /**@description max number of elements in a line，一行/列几个元素 */
-    itemPerLine?: number;
-    /**@description  number of lines，一共几行/列*/
-    lineCount?: number;
     /**@description data，传入数据 */
     data?: ITimelineItemData[] | ITimelineContent[];
     css?: Partial<ISnakeTimelineCssVar>;
