@@ -31,7 +31,7 @@ export interface ISnakeTimelineCssVar {
     lineColor: string;
     lineWidth: number;
     dotSize: number;
-    pad: number;
+    pad: [number, number];
 }
 
 /**

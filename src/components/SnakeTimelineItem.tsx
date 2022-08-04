@@ -1,9 +1,9 @@
 import { ITimelineItemData } from '../ISnakeTimeline';
 function SnakeTimelineItem(props: ITimelineItemData) {
-    const { prefix, className = "", style, content, dot, dotStyle, lineStyle, contentStyle, position } = props;
+    const { prefix, className = "", style, content, dot, dotStyle, lineStyle, contentStyle, position = "righttop" } = props;
     const prefixCls = (str: string) => `${prefix}-${str}`;
     return (
-        <li className={`${prefixCls("item")} ${prefixCls(position||"righttop")}  ${className}}`} style={style}>
+        <li className={`${prefixCls("item")} ${prefixCls("item-" + position || "righttop")}  ${className}`} style={style}>
             <div className={prefixCls("line")} style={lineStyle} />
             <div className={prefixCls("dot")} style={dotStyle}>
                 {dot}

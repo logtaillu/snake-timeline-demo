@@ -11,7 +11,7 @@ const defaultCssVar: ISnakeTimelineCssVar = {
     lineColor: "#e8e8e8",
     lineWidth: 2,
     dotSize: 10,
-    pad: 10
+    pad: [10, 10]
 }
 
 // merge item style props
@@ -24,7 +24,7 @@ const mergeProps = (itemProps: ISnakeTimelineStyleProps, wrapProps: ISnakeTimeli
     return mergeProps;
 }
 function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
-    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap, direction = "vertical", reverse, itemWidth, css } = props;
+    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap, direction = "vertical", reverse, itemWidth, css, position = "righttop" } = props;
     const [itemW, setItemW] = useSafeState(itemWidth);
     const [adjusting, setAajusting] = useSafeState(true);
 
@@ -43,8 +43,8 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
     useEffect(() => {
         // resort items and add circle
         if (w && h && ref.current && wrap) {
-                const colunmW = getItemWidth(ref.current, itemWidth);
-                adjustPosition(ref.current, colunmW, cssvars.lineWidth);
+            const colunmW = getItemWidth(ref.current, itemWidth);
+            adjustPosition(ref.current, colunmW, cssvars.lineWidth);
             setItemW(colunmW);
             setAajusting(false);
         } else if (!wrap) {
@@ -61,12 +61,13 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
             ary.reverse();
         }
         childeles = ary.map((info, idx) => {
+            const subprops = { prefix, position: position === "alternate" ? idx % 2 === 0 ? "righttop" : "leftbottom" : position };
             if (!info) {
                 return null;
             } else if (typeof (info) === "object" && info && 'content' in info) {
-                return <SnakeTimelineItem key={idx} prefix={prefix} {...info} {...mergeProps(info, props)} />;
+                return <SnakeTimelineItem key={idx} {...subprops} {...info} {...mergeProps(info, props)} />;
             } else {
-                return <SnakeTimelineItem key={idx} prefix={prefix} content={info} {...mergeProps({}, props)} />;
+                return <SnakeTimelineItem key={idx} {...subprops} content={info} {...mergeProps({}, props)} />;
             }
         }).filter(s => !!s);
     } else {
@@ -77,14 +78,15 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
         }
         childeles = React.Children.map(ary, (ele: React.ReactElement, idx: number) => {
             return React.cloneElement(ele, {
-                prefixCls: ele.props.prefix || prefix || DEFAULT_PREFIX_CLS,
+                position: position === "alternate" ? idx % 2 === 0 ? "righttop" : "leftbottom" : position,
+                prefix: ele.props.prefix || prefix || DEFAULT_PREFIX_CLS,
                 ...mergeProps(ele.props, props)
             });
         });
     }
     return (
-        <div className={`${prefixCls("wrapper")} ${className || ""}`} style={{ paddingTop: cssvars.pad, visibility: adjusting ? "hidden" : "visible", ...style }}>
-            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)}`} prefix={prefix} w={itemW} cssvar={cssvars}>
+        <div className={`${prefixCls("wrapper")} ${className || ""}`} style={{ paddingTop: cssvars.pad[0], visibility: adjusting ? "hidden" : "visible", ...style }}>
+            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${prefixCls(position)}`} prefix={prefix} w={itemW} cssvar={cssvars}>
                 {childeles}
             </SnakeStyledList>
         </div>
