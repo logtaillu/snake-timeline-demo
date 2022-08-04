@@ -1,16 +1,16 @@
-import { ISnakeTimelineProps } from "../ISnakeTimeline";
 /**
  * check if more then count lines
  * @param children timeline item array
  * @param count line num
  * @returns boolean
  */
-const checkLineNumByCount = (children: HTMLLIElement[], count: number) => {
+const checkLineNumByCount = (children: HTMLLIElement[], count: number, direction: "vertical" | "horizontal") => {
     let start = 0;
     let lines = 0;
     let flag = false;
+    const key = direction === "vertical" ? "offsetLeft" : "offsetTop";
     for (let i = 0; i < children.length; i++) {
-        const cur = children[i].offsetLeft;
+        const cur = children[i][key];
         if (i == 0) {
             start = cur;
             lines = 1;
@@ -26,13 +26,14 @@ const checkLineNumByCount = (children: HTMLLIElement[], count: number) => {
     return flag;
 }
 
-export const getItemWidth = (ele: HTMLUListElement, itemWidth?: number) => {
+export const getItemSize = (ele: HTMLUListElement, direction: "vertical" | "horizontal", itemSize?: number) => {
     const children = Array.from(ele.children) as HTMLLIElement[];
-    if (itemWidth) {
-        return itemWidth;
+    if (itemSize && direction === "vertical") {
+        return itemSize;
     } else {
-        const itemW = children.reduce((pre, cur) => Math.max(pre, cur.offsetWidth), 0);
-        return itemW;
+        const key = direction === "vertical" ? "offsetWidth" : "offsetHeight";
+        const itemS = children.reduce((pre, cur) => Math.max(pre, cur[key]), 0);
+        return itemS;
     }
 }
 
@@ -42,25 +43,36 @@ export const clearEffects = (ele: HTMLUListElement) => {
     children.map((value, index) => {
         value.style.order = index.toString();
         value.dataset.circle = "";
+        value.style.height = "auto";
     });
     // clear padding
+    ele.style.width = "auto";
+    ele.style.height = "auto";
     ele.style.paddingTop = "0px";
     ele.style.paddingBottom = "0px";
+    ele.style.paddingLeft = "0px";
+    ele.style.paddingRight = "0px";
 }
-
-export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: number) => {
+export const adjustPosition = (ele: HTMLUListElement, columnSize: number, lineW: number, direction: "vertical" | "horizontal", wrap: boolean) => {
+    const v = direction === "vertical";
     clearEffects(ele);
     const children = Array.from(ele.children) as HTMLLIElement[];
-    const pad = (columnW + lineW) / 2;
+    const pad = (columnSize + lineW) / 2;
     // check if multi line
-    const multiline = checkLineNumByCount(children, 1);
+    const multiline = !wrap && checkLineNumByCount(children, 1, direction);
+    const keys: any = {
+        fircicle: v ? "paddingBottom" : "paddingRight",
+        seccircle: v ? "paddingTop" : "paddingLeft",
+        offset: v ? "offsetLeft" : "offsetTop",
+        size: v ? "width" : "height"
+    }
     if (multiline) {
         // add bottom padding
-        ele.style.paddingBottom = pad + "px";
+        ele.style[keys.fircicle] = pad + "px";
         // lines > 2, add top padding
-        const moreThenTwo = checkLineNumByCount(children, 2);
+        const moreThenTwo = checkLineNumByCount(children, 2, direction);
         if (moreThenTwo) {
-            ele.style.paddingTop = pad + "px";
+            ele.style[keys.seccircle] = pad + "px";
         }
         let start: number = 0; // offset起始
         let idxAry: number[] = []; // 缓存indexs
@@ -77,8 +89,8 @@ export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: nu
                 };
             });
         };
-        children.map((value, index) => {
-            const sameLine = value.offsetLeft === start;
+        children.map((value: any, index) => {
+            const sameLine = value[keys.offset] === start;
             if (sameLine) {
                 // 相同offset，缓存index
                 idxAry.push(index);
@@ -88,7 +100,7 @@ export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: nu
                     handleOrder();
                     reverse = !reverse;
                 }
-                start = value.offsetLeft;
+                start = value[keys.offset];
                 idxAry = [index];
             }
         });
@@ -103,9 +115,12 @@ export const adjustPosition = (ele: HTMLUListElement, columnW: number, lineW: nu
                 value.style.order = index.toString();
                 value.dataset.circle = "";
             }
+            if (direction === "horizontal") {
+                value.style.height = columnSize + "px";
+            }
         });
-        ele.style.width = lines * columnW + "px";
+        ele.style[keys.size] = lines * columnSize + "px";
     } else {
-        ele.style.width = columnW + "px";
+        ele.style[keys.size] = columnSize + "px";
     }
 };

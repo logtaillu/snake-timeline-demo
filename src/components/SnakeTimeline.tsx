@@ -4,7 +4,7 @@ import "../styles/index.less";
 import { ISnakeTimelineCssVar, ISnakeTimelineProps, ISnakeTimelineStyleProps } from '../ISnakeTimeline';
 import SnakeTimelineItem from './SnakeTimelineItem';
 import SnakeStyledList from './SnakeStyledList';
-import { adjustPosition, getItemWidth, clearEffects } from "./util";
+import { adjustPosition, getItemSize, clearEffects } from "./util";
 
 const DEFAULT_PREFIX_CLS = "react-snake-timeline";
 const defaultCssVar: ISnakeTimelineCssVar = {
@@ -24,8 +24,8 @@ const mergeProps = (itemProps: ISnakeTimelineStyleProps, wrapProps: ISnakeTimeli
     return mergeProps;
 }
 function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
-    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap, direction = "vertical", reverse, itemWidth, css, position = "righttop" } = props;
-    const [itemW, setItemW] = useSafeState(itemWidth);
+    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap = false, direction = "vertical", reverse, itemWidth, css, position = "righttop" } = props;
+    const [itemS, setItemS] = useSafeState(0);
     const [adjusting, setAajusting] = useSafeState(true);
 
     const ref = useRef<HTMLUListElement>(null);
@@ -33,21 +33,12 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
     const w = (size && size.width) || 0;
     const h = (size && size.height) || 0;
     const cssvars = { ...defaultCssVar, ...css };
-
-    // clear when no wrap
-    useUpdateEffect(() => {
-        if (!wrap && ref && ref.current) {
-            clearEffects(ref.current);
-        }
-    }, [wrap]);
     useEffect(() => {
         // resort items and add circle
-        if (w && h && ref.current && wrap) {
-            const colunmW = getItemWidth(ref.current, itemWidth);
-            adjustPosition(ref.current, colunmW, cssvars.lineWidth);
-            setItemW(colunmW);
-            setAajusting(false);
-        } else if (!wrap) {
+        if (w && h && ref.current) {
+            const colunmS = getItemSize(ref.current, direction, itemWidth);
+            adjustPosition(ref.current, colunmS, cssvars.lineWidth, direction, wrap);
+            setItemS(colunmS);
             setAajusting(false);
         }
     }, [w, h, itemWidth, wrap, cssvars.lineWidth]);
@@ -85,8 +76,8 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
         });
     }
     return (
-        <div className={`${prefixCls("wrapper")} ${className || ""}`} style={{ paddingTop: cssvars.pad[0], visibility: adjusting ? "hidden" : "visible", ...style }}>
-            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${prefixCls(position)}`} prefix={prefix} w={itemW} cssvar={cssvars}>
+        <div className={`${prefixCls("wrapper")} ${prefixCls("wrapper-" + direction)} ${className || ""}`} style={{  visibility: adjusting ? "hidden" : "visible", ...style }}>
+            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${prefixCls(position)}`} prefix={prefix} s={itemS} cssvar={cssvars} w={itemWidth}>
                 {childeles}
             </SnakeStyledList>
         </div>
