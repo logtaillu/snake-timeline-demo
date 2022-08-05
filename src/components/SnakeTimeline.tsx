@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSafeState, useSize, useUpdateEffect } from "ahooks";
+import React, { useEffect, useRef } from 'react';
+import { useSafeState, useSize } from "ahooks";
 import "../styles/index.less";
 import { ISnakeTimelineCssVar, ISnakeTimelineProps, ISnakeTimelineStyleProps } from '../ISnakeTimeline';
 import SnakeTimelineItem from './SnakeTimelineItem';
 import SnakeStyledList from './SnakeStyledList';
-import { adjustPosition, getItemSize } from "./util";
+import { adjustPosition } from "./util";
 
 const DEFAULT_PREFIX_CLS = "react-snake-timeline";
 const defaultCssVar: ISnakeTimelineCssVar = {
