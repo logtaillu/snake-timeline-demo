@@ -1,3 +1,4 @@
+import { ISnakeTimelineCssVar, ISnakeTimelinePosition } from "../ISnakeTimeline";
 /**
  * check if more then count lines
  * @param children timeline item array
@@ -26,13 +27,17 @@ const checkLineNumByCount = (children: HTMLLIElement[], count: number, direction
     return flag;
 }
 
-export const getItemSize = (ele: HTMLUListElement, direction: "vertical" | "horizontal", itemSize?: number) => {
+export const getItemSize = (ele: HTMLUListElement, direction: "vertical" | "horizontal", itemSize: number | undefined, position: ISnakeTimelinePosition, cssvars: ISnakeTimelineCssVar) => {
     const children = Array.from(ele.children) as HTMLLIElement[];
-    if (itemSize && direction === "vertical") {
+    const vertical = direction === "vertical";
+    if (itemSize && vertical) {
         return itemSize;
     } else {
-        const key = direction === "vertical" ? "offsetWidth" : "offsetHeight";
-        const itemS = children.reduce((pre, cur) => Math.max(pre, cur[key]), 0);
+        const key = vertical ? "offsetWidth" : "offsetHeight";
+        let itemS = children.reduce((pre, cur) => Math.max(pre, cur[key]), 0);
+        if (position === "alternate" && !vertical) {
+            itemS = itemS * 2 - cssvars.dotSize;
+        }
         return itemS;
     }
 }
@@ -43,23 +48,26 @@ export const clearEffects = (ele: HTMLUListElement) => {
     children.map((value, index) => {
         value.style.order = index.toString();
         value.dataset.circle = "";
-        value.style.height = "auto";
+        value.style.height = "";
     });
     // clear padding
-    ele.style.width = "auto";
-    ele.style.height = "auto";
+    ele.style.width = "";
+    ele.style.height = "";
     ele.style.paddingTop = "0px";
     ele.style.paddingBottom = "0px";
     ele.style.paddingLeft = "0px";
     ele.style.paddingRight = "0px";
 }
-export const adjustPosition = (ele: HTMLUListElement, columnSize: number, lineW: number, direction: "vertical" | "horizontal", wrap: boolean) => {
+export const adjustPosition = (ele: HTMLUListElement, itemWidth: number | undefined, cssvars: ISnakeTimelineCssVar, direction: "vertical" | "horizontal", wrap: boolean, position: ISnakeTimelinePosition) => {
     const v = direction === "vertical";
+    // 清除上一次的操作
     clearEffects(ele);
+    // 计算实际size
+    const columnSize = getItemSize(ele, direction, itemWidth, position, cssvars);
     const children = Array.from(ele.children) as HTMLLIElement[];
-    const pad = (columnSize + lineW) / 2;
+    const pad = (columnSize + cssvars.lineWidth) / 2;
     // check if multi line
-    const multiline = !wrap && checkLineNumByCount(children, 1, direction);
+    const multiline = wrap && checkLineNumByCount(children, 1, direction);
     const keys: any = {
         fircicle: v ? "paddingBottom" : "paddingRight",
         seccircle: v ? "paddingTop" : "paddingLeft",
@@ -121,6 +129,12 @@ export const adjustPosition = (ele: HTMLUListElement, columnSize: number, lineW:
         });
         ele.style[keys.size] = lines * columnSize + "px";
     } else {
+        if (direction === "horizontal") {
+            children.map((value, index) => {
+                value.style.height = columnSize + "px";
+            });
+        }
         ele.style[keys.size] = columnSize + "px";
     }
+    return columnSize;
 };

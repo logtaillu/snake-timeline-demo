@@ -4,7 +4,7 @@ import "../styles/index.less";
 import { ISnakeTimelineCssVar, ISnakeTimelineProps, ISnakeTimelineStyleProps } from '../ISnakeTimeline';
 import SnakeTimelineItem from './SnakeTimelineItem';
 import SnakeStyledList from './SnakeStyledList';
-import { adjustPosition, getItemSize, clearEffects } from "./util";
+import { adjustPosition, getItemSize } from "./util";
 
 const DEFAULT_PREFIX_CLS = "react-snake-timeline";
 const defaultCssVar: ISnakeTimelineCssVar = {
@@ -36,12 +36,11 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
     useEffect(() => {
         // resort items and add circle
         if (w && h && ref.current) {
-            const colunmS = getItemSize(ref.current, direction, itemWidth);
-            adjustPosition(ref.current, colunmS, cssvars.lineWidth, direction, wrap);
+            const colunmS = adjustPosition(ref.current, itemWidth, cssvars, direction, wrap, position);
             setItemS(colunmS);
             setAajusting(false);
         }
-    }, [w, h, itemWidth, wrap, cssvars.lineWidth]);
+    }, [w, h, itemWidth, wrap, position, direction, cssvars.lineWidth]);
     const prefixCls = (str: string) => `${prefix}-${str}`;
 
     // getChildren
@@ -76,11 +75,9 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
         });
     }
     return (
-        <div className={`${prefixCls("wrapper")} ${prefixCls("wrapper-" + direction)} ${className || ""}`} style={{  visibility: adjusting ? "hidden" : "visible", ...style }}>
-            <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${prefixCls(position)}`} prefix={prefix} s={itemS} cssvar={cssvars} w={itemWidth}>
-                {childeles}
-            </SnakeStyledList>
-        </div>
+        <SnakeStyledList ref={ref} className={`${prefixCls("list")} ${wrap ? prefixCls("wrap") : ""} ${prefixCls(direction)} ${prefixCls(position)} ${className || ""}`} prefix={prefix} s={itemS} cssvar={cssvars} w={itemWidth} style={{ visibility: adjusting ? "hidden" : "visible", ...style }}>
+            {childeles}
+        </SnakeStyledList>
     )
 }
 export default SnakeTimeline;

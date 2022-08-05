@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import SnakeTimeline from '../src/index';
-const mockData = new Array(5).fill(0)
+const mockData = new Array(20).fill(0)
   .map((s, idx) => ({
     content: `test aaaa bbbb ccccccc ${idx + 1}`
   }));
@@ -15,7 +15,7 @@ const App = () => {
       <button onClick={() => setWrap(!wrap)}>{wrap ? "wrap" : "nowrap"}</button>
       <button onClick={() => setHoz(!hoz)}>{hoz?"horizontal":"vertical"}</button>
       {["righttop", "leftbottom", "alternate"].map(pos => <button key={pos} onClick={()=>click(pos)}>{pos}</button>)}
-      <div style={{ padding: 10, height: 600 }}>
+      <div style={{ padding: 10, height: 500 }}>
         <SnakeTimeline wrap={wrap} data={mockData} direction={hoz ? "horizontal":'vertical' } position={position} />
       </div>
     </div>

@@ -11,8 +11,13 @@ ${(props) => {
     const itemprefix = `>li.${prefix}-item`;
     const cssstr = (v: boolean) => `
   &.${prefix}-${v ? "vertical" : "horizontal"}{
+      ${itemprefix}{
+        ${w ? `width: ${w}px;
+        flex-shrink: 0;
+        `: ""}
+      }
       &.${prefix}-wrap ${itemprefix}{
-        width: ${v ? items ? `${items}px` : "auto" : w ? `${w}px` : "auto"};
+        width: ${v && items ? `${items}px` : ""};
       }
       /*元素部分*/
       ${itemprefix}{
@@ -86,32 +91,7 @@ ${(props) => {
         : `top: ${(dotSize - lineWidth) / 2}px`};
         }
       }
-      /*交错布局*/
       &.${prefix}-alternate{
-         ${itemprefix}{
-            .${prefix}-dot{
-              ${v ? "left" : "bottom"}: calc( 50% - ${dotSize / 2}px );
-            }
-            .${prefix}-line{
-              ${v ? "left" : "bottom"}: calc( 50% - ${lineWidth / 2}px);
-            }
-          }
-         ${itemprefix}.${prefix}-item-leftbottom .${prefix}-content{
-                ${v ? `
-                width: 50%;
-                margin-right: calc( 50% + ${padHoz + dotSize / 2}px );
-                ` : `
-                margin-top: 100%;
-                `}
-          }
-         ${itemprefix}.${prefix}-item-righttop .${prefix}-content{
-              ${v ? `
-              width: 50%;
-              margin-left: calc( 50% + ${padHoz + dotSize / 2}px );
-              ` : `
-              margin-bottom: 100%;
-              `}
-          }
          ${itemprefix}[data-circle="top"]::before,
          ${itemprefix}[data-circle="bottom"]::after{
             ${v ? "left" : "top"}: calc( 50% - ${lineWidth / 2}px);
@@ -123,6 +103,54 @@ ${(props) => {
     return css`
         ${cssstr(true)}
         ${cssstr(false)}
+        /*交错布局*/
+        &.${prefix}-vertical.${prefix}-alternate{
+          ${itemprefix}{
+            .${prefix}-dot{
+              left: calc( 50% - ${dotSize / 2}px );
+            }
+            .${prefix}-line{
+              left: calc( 50% - ${lineWidth / 2}px);
+            }
+          }
+         ${itemprefix}.${prefix}-item-leftbottom .${prefix}-content{
+                width: 50%;
+                margin-right: calc( 50% + ${padHoz + dotSize / 2}px );
+          }
+         ${itemprefix}.${prefix}-item-righttop .${prefix}-content{
+              width: 50%;
+              margin-left: calc( 50% + ${padHoz + dotSize / 2}px );
+          }
+        }
+        &.${prefix}-horizontal.${prefix}-alternate{
+          ${itemprefix}{
+            .${prefix}-dot{
+              bottom: calc( 50% - ${dotSize / 2}px );
+            }
+            .${prefix}-line{
+              bottom: calc( 50% - ${lineWidth / 2}px);
+            }
+            &.${prefix}-item-leftbottom{
+              align-self: flex-start;
+              align-items: flex-start;
+              .${prefix}-content{
+                top: 50%;
+              }
+            }
+            &.${prefix}-item-righttop{
+              align-self: flex-end;
+              align-items: flex-end;
+              .${prefix}-content{
+                bottom: 50%;
+              }
+            }
+          }
+          &.${prefix}-wrap ${itemprefix}{
+            &.${prefix}-item-leftbottom{
+            }
+            &.${prefix}-item-righttop{}
+          }
+        }
     `;
   }}`;
 export default SnakeStyledList;

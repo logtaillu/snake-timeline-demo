@@ -1,10 +1,5 @@
 @snake-timeline-prefix: react-snake-timeline;
 .@{snake-timeline-prefix} {
-    &-wrapper{
-        box-sizing: border-box;
-        height: 100%;
-        display: flex;
-    }
     &-list {
         box-sizing: border-box;
         list-style: none;
@@ -12,7 +7,6 @@
         margin-block-end: 0;
         padding-inline-start: 0;
         display: flex;
-        height: auto;
         width: auto;
         align-content: center;
         align-items: center;
@@ -21,15 +15,22 @@
 
     &-wrap {
         flex-wrap: wrap;
+        height: 100%;
     }
 
-    &-vertical, &-wrapper-horizontal {
+    &-vertical {
         flex-direction: column;
         justify-content: center;
     }
 
-    &-horizontal, &-wrapper-vertical {
+    &-horizontal {
         flex-direction: row;
+    }
+    &-horizontal&-righttop{
+        align-items: flex-end;
+    }
+    &-horizontal&-leftbottom{
+        align-items: flex-start;
     }
 
     // item part

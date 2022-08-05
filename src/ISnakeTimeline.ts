@@ -38,11 +38,12 @@ export interface ISnakeTimelineCssVar {
  * lineCount have priority over itemPerLine
  * props.children have priority over props.data
  */
+export type ISnakeTimelinePosition = "leftbottom" | "righttop" | "alternate";
 export interface ISnakeTimelineProps extends ISnakeTimelineStyleProps {
     /**@description timeline direction， 方向  @default vertical*/
     direction?: "vertical" | "horizontal";
     /**@description position of element relative to line, right/left for  vertical,top/bottom for horizontal， 元素定位 @default righttop*/
-    position?: "leftbottom" | "righttop" | "alternate";
+    position?: ISnakeTimelinePosition;
     /**@description reverse all items，是否倒序 @default false*/
     reverse?: boolean;
     /**@description wrap line or not， 是否换行 @default false */
