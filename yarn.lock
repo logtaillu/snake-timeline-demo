@@ -320,6 +320,11 @@
   resolved "http://scm.nicezhuanye.com/artifactory/api/npm/npm_virtual/@types/js-cookie/-/js-cookie-2.2.7.tgz#226a9e31680835a6188e887f3988e60c04d3f6a3"
   integrity sha1-ImqeMWgINaYYjoh/OYjmDATT9qM=
 
+"@types/node@^18.6.4":
+  version "18.6.4"
+  resolved "http://scm.nicezhuanye.com/artifactory/api/npm/npm_virtual/@types/node/-/node-18.6.4.tgz#fd26723a8a3f8f46729812a7f9b4fc2d1608ed39"
+  integrity sha1-/SZyOoo/j0ZymBKn+bT8LRYI7Tk=
+
 "@types/prop-types@*":
   version "15.7.5"
   resolved "http://scm.nicezhuanye.com/artifactory/api/npm/npm_virtual/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
