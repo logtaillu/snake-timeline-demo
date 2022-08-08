@@ -26,7 +26,7 @@ export interface ITimelineItemData extends ISnakeTimelineStyleProps {
     /**@description content，内容 @default "" */
     content: ITimelineContent;
     /**@description dot element，轴点元素*/
-    dot?: React.ReactNode;
+    dot?: React.ReactElement;
 }
 
 export interface ISnakeTimelineCssVar {
@@ -35,8 +35,12 @@ export interface ISnakeTimelineCssVar {
     dotSize: number;
     padVertical: number;
     padHorizontal: number;
+    // Calculation independent
     dotColor: string;
     dotBorder: number;
+    contentColor: string;
+    contentBackground: string;
+
 }
 
 /**
@@ -55,8 +59,8 @@ export interface ISnakeTimelineProps extends ISnakeTimelineStyleProps {
     wrap?: boolean;
     /**@description width of one item，单个元素宽度 */
     itemWidth?: number;
-    /**@description dot element，轴点元素*/
-    dot?: React.ReactNode;
+     /**@description dot element，轴点元素*/
+     dot?: React.ReactElement;
     /**@description data，传入数据 */
     data?: ITimelineItemData[] | ITimelineContent[];
     /**@description 样式变量 */

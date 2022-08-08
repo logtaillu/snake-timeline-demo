@@ -14,7 +14,9 @@ const defaultCssVar: ISnakeTimelineCssVar = {
     padVertical: 10,
     padHorizontal: 10,
     dotColor: "cornflowerblue",
-    dotBorder: 2
+    dotBorder: 2,
+    contentColor: "#fff",
+    contentBackground: "coral"
 }
 
 // merge item style props
@@ -43,7 +45,7 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
             setItemS(colunmS);
             setAajusting(false);
         }
-    }, [w, h, itemWidth, wrap, position, direction, cssvars.lineWidth]);
+    }, [w, h, itemWidth, wrap, position, direction, cssvars.lineWidth, reverse]);
     const prefixCls = (str: string) => `${prefix}-${str}`;
 
     // getChildren

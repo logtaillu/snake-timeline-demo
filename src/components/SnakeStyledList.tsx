@@ -102,9 +102,22 @@ ${(props) => {
     return css`
         ${cssstr(true)}
         ${cssstr(false)}
+        .${prefix}-item .${prefix}-content{
+          background: ${cssvar.contentBackground};
+          color: ${cssvar.contentColor};
+        }
         .${prefix}-item .${prefix}-dot{
           color: ${cssvar.dotColor};
           border: ${cssvar.dotBorder}px solid ${cssvar.dotColor};
+          &.${prefix}-dotinner{
+            border: none;
+          }
+        }
+        &.${prefix}-vertical.${prefix}-righttop ${itemprefix}{
+          align-self: flex-start;
+        }
+        &.${prefix}-vertical.${prefix}-leftbottom ${itemprefix}{
+          align-self: flex-end;
         }
         /*交错布局*/
         &.${prefix}-vertical.${prefix}-alternate{
@@ -147,11 +160,6 @@ ${(props) => {
                 bottom: 50%;
               }
             }
-          }
-          &.${prefix}-wrap ${itemprefix}{
-            &.${prefix}-item-leftbottom{
-            }
-            &.${prefix}-item-righttop{}
           }
         }
     `;

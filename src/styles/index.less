@@ -21,6 +21,7 @@
     &-vertical {
         flex-direction: column;
         justify-content: center;
+        min-height: 100%;
     }
 
     &-horizontal {
@@ -40,6 +41,8 @@
         display: flex;
         align-items: center;
         box-sizing: border-box;
+    }
+    &-horizontal &-item{
         justify-content: center;
     }
 
@@ -61,10 +64,8 @@
         position: relative;
         margin: 0;
         word-break: break-word;
-        background: coral;
-        color: #fff;
         border-radius: 4px;
         padding: 10px;
-        white-space: pre;
+        white-space: pre-wrap;
     }
 }
