@@ -12,6 +12,8 @@ export interface ISnakeTimelineStyleProps {
     style?: React.CSSProperties;
     /**@description className prefix 样式前缀，配合less一起 @default react-snake-timeline */
     prefix?: string;
+    /**@description content template */
+    template?: string | React.FC<ITimelineItemData> | React.ComponentClass<ITimelineItemData, any>;
 }
 /**
  * 使用默认样式的数据
@@ -33,6 +35,8 @@ export interface ISnakeTimelineCssVar {
     dotSize: number;
     padVertical: number;
     padHorizontal: number;
+    dotColor: string;
+    dotBorder: number;
 }
 
 /**
@@ -51,7 +55,10 @@ export interface ISnakeTimelineProps extends ISnakeTimelineStyleProps {
     wrap?: boolean;
     /**@description width of one item，单个元素宽度 */
     itemWidth?: number;
+    /**@description dot element，轴点元素*/
+    dot?: React.ReactNode;
     /**@description data，传入数据 */
     data?: ITimelineItemData[] | ITimelineContent[];
+    /**@description 样式变量 */
     css?: Partial<ISnakeTimelineCssVar>;
 }

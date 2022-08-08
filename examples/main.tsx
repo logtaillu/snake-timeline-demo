@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import SnakeTimeline from '../src/index';
 const mockData = new Array(20).fill(0)
   .map((s, idx) => ({
-    content: `test aaaa bbbb ccccccc ${idx + 1}`
+    content: `test\naaaa\nbbbb\nccccccc ${idx + 1}`
   }));
 const App = () => {
   const [position, setPosition] = useState<"righttop" | "leftbottom" | "alternate">("alternate");
@@ -13,10 +13,10 @@ const App = () => {
   return (
     <div>
       <button onClick={() => setWrap(!wrap)}>{wrap ? "wrap" : "nowrap"}</button>
-      <button onClick={() => setHoz(!hoz)}>{hoz?"horizontal":"vertical"}</button>
+      <button onClick={() => setHoz(!hoz)}>{hoz ? "horizontal" : "vertical"}</button>
       {["righttop", "leftbottom", "alternate"].map(pos => <button key={pos} onClick={()=>click(pos)}>{pos}</button>)}
       <div style={{ padding: 10, height: 500 }}>
-        <SnakeTimeline wrap={wrap} data={mockData} direction={hoz ? "horizontal":'vertical' } position={position} />
+        <SnakeTimeline wrap={wrap} data={mockData} direction={hoz ? "horizontal" : 'vertical'} position={position} template={"<div>${content.split('\\n')[0]}</div>"} />
       </div>
     </div>
   );

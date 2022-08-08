@@ -12,7 +12,9 @@ const defaultCssVar: ISnakeTimelineCssVar = {
     lineWidth: 2,
     dotSize: 10,
     padVertical: 10,
-    padHorizontal: 10
+    padHorizontal: 10,
+    dotColor: "cornflowerblue",
+    dotBorder: 2
 }
 
 // merge item style props
@@ -25,7 +27,7 @@ const mergeProps = (itemProps: ISnakeTimelineStyleProps, wrapProps: ISnakeTimeli
     return mergeProps;
 }
 function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
-    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap = false, direction = "vertical", reverse, itemWidth, css, position = "righttop" } = props;
+    const { className = "", style, prefix = DEFAULT_PREFIX_CLS, data, children, wrap = false, direction = "vertical", reverse, itemWidth, css, position = "righttop", dot, template } = props;
     const [itemS, setItemS] = useSafeState(0);
     const [adjusting, setAajusting] = useSafeState(true);
 
@@ -52,7 +54,7 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
             ary.reverse();
         }
         childeles = ary.map((info, idx) => {
-            const subprops = { prefix, position: position === "alternate" ? idx % 2 === 0 ? "righttop" : "leftbottom" : position };
+            const subprops = { prefix, position: position === "alternate" ? idx % 2 === 0 ? "righttop" : "leftbottom" : position, dot, template };
             if (!info) {
                 return null;
             } else if (typeof (info) === "object" && info && 'content' in info) {
@@ -71,6 +73,8 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
             return React.cloneElement(ele, {
                 position: position === "alternate" ? idx % 2 === 0 ? "righttop" : "leftbottom" : position,
                 prefix: ele.props.prefix || prefix || DEFAULT_PREFIX_CLS,
+                dot,
+                template,
                 ...mergeProps(ele.props, props)
             });
         });

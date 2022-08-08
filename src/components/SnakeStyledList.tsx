@@ -102,6 +102,10 @@ ${(props) => {
     return css`
         ${cssstr(true)}
         ${cssstr(false)}
+        .${prefix}-item .${prefix}-dot{
+          color: ${cssvar.dotColor};
+          border: ${cssvar.dotBorder}px solid ${cssvar.dotColor};
+        }
         /*交错布局*/
         &.${prefix}-vertical.${prefix}-alternate{
           ${itemprefix}{
