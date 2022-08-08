@@ -4,8 +4,7 @@ import { ISnakeTimelineCssVar } from "../ISnakeTimeline";
 const SnakeStyledList = styled.ul<{ s?: number, prefix: string, cssvar: ISnakeTimelineCssVar, w?: number }>`
 ${(props) => {
     const { s: items = 0, prefix, cssvar, w } = props;
-    const { pad, lineColor, lineWidth, dotSize } = cssvar;
-    const [padVer, padHoz] = pad;
+    const { padHorizontal: padHoz, padVertical: padVer, lineColor, lineWidth, dotSize } = cssvar;
     const s = items + lineWidth;
     const halfw = s / 2;
     const itemprefix = `>li.${prefix}-item`;

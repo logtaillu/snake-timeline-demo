@@ -11,7 +11,8 @@ const defaultCssVar: ISnakeTimelineCssVar = {
     lineColor: "#e8e8e8",
     lineWidth: 2,
     dotSize: 10,
-    pad: [10, 10]
+    padVertical: 10,
+    padHorizontal: 10
 }
 
 // merge item style props
