@@ -2,7 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from "path";
 import dts from 'vite-plugin-dts';
-const name = require("./package.json").name;
+const pkg = require("./package.json");
+const name = pkg.name;
+const depexternals = Object.keys(pkg.dependencies || {});
+const peerexternals = Object.keys(pkg.peerDependencies || {});
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), dts()],
@@ -13,14 +16,14 @@ export default defineConfig({
       fileName: format => `${name}.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'styled-components',"ahooks"],
+      external: [...depexternals, ...peerexternals],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
           'styled-components': 'styled',
-        },
-      },
+        }
+      }
     }
   }
 })
