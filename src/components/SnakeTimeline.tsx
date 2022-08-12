@@ -40,12 +40,12 @@ function SnakeTimeline(props: React.PropsWithChildren<ISnakeTimelineProps>) {
     const cssvars = { ...defaultCssVar, ...css };
     useEffect(() => {
         // resort items and add circle
-        if (w && h && ref.current) {
+        if (w && h && ref.current && (data?.length || React.Children.toArray(children).length)) {
             const colunmS = adjustPosition(ref.current, itemWidth, cssvars, direction, wrap, position);
             setItemS(colunmS);
             setAajusting(false);
         }
-    }, [w, h, itemWidth, wrap, position, direction, cssvars.lineWidth, reverse]);
+    }, [w, h, itemWidth, wrap, position, direction, cssvars.lineWidth, reverse, children, data]);
     const prefixCls = (str: string) => `${prefix}-${str}`;
 
     // getChildren
